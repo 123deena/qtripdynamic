@@ -3,6 +3,7 @@ import config from "../conf/index.js";
 async function init() {
   //Fetches list of all cities along with their images and description
   let cities = await fetchCities();
+  
 
   //Updates the DOM with the cities
   cities.forEach((key) => {
@@ -14,6 +15,15 @@ async function init() {
 async function fetchCities() {
   // TODO: MODULE_CITIES
   // 1. Fetch cities using the Backend API and return the data
+  const url = "http://13.126.251.16:8082/cities";
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Error fetching data:', error);
+    return null;
+  }
 
 }
 
@@ -21,6 +31,37 @@ async function fetchCities() {
 function addCityToDOM(id, city, description, image) {
   // TODO: MODULE_CITIES
   // 1. Populate the City details and insert those details into the DOM
+
+  const parentOfAll = document.getElementById("data");
+
+  const Div1 = document.createElement("div");
+  Div1.setAttribute("class","tile col-lg-3 col-md-6 col-sm-12");
+  Div1.setAttribute("id",id);
+
+
+  const ImageTag = document.createElement("img");
+  ImageTag.setAttribute("src",image);
+  ImageTag.setAttribute("class","img-fluid");
+  
+  // append to division
+
+  Div1.append(ImageTag);
+
+  const TextDiv = document.createElement("div")
+  TextDiv.setAttribute("class","tile-text");
+  const h2 = document.createElement("h2")
+  h2.textContent = city;
+  const p = document.createElement("p");
+  p.textContent = description;
+
+  TextDiv.append(h2);
+  TextDiv.append(p);
+
+  // append to parent
+
+  Div1.append(TextDiv);
+
+  parentOfAll.append(Div1);
 
 }
 
