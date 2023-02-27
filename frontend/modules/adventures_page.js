@@ -5,6 +5,14 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+  const UrlParam = new URLSearchParams(search);
+  const Cityid = UrlParam.get('city');
+  //console.log(UrlParam.get('city'));
+  //return UrlParam.get('city');
+  console.log(Cityid);
+  return Cityid;
+
+
 
 }
 
@@ -12,6 +20,22 @@ function getCityFromURL(search) {
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+  //const city1 = getCityFromURL();
+  //const backendEndpoint = 'http://3.111.228.177:8082';
+  //const url = `${config.backendEndpoint}/adventures?city=${city}`;
+
+  try{
+  const response = await fetch(config.backendEndpoint+`/adventures/?city=${city}`);
+  const data = await response.json();
+  return data
+  }
+  catch(error)
+  {
+    console.log('Error fetching data:', error);
+    return null;
+  }
+
+
 
 }
 
@@ -20,7 +44,94 @@ function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
 
-}
+  const DataContainer = document.getElementById("data");
+  console.log(adventures);
+
+  for(let i=0;i<adventures.length;i++)
+  {
+    const ParentDiv = document.createElement("div");
+    ParentDiv.setAttribute("class","col-12 col-sm-6 col-lg-3 mb-3");
+    console.log(ParentDiv);
+
+    // Anchor to particular city areas
+    const Link = document.createElement("a");
+    Link.setAttribute("id",adventures[i].id);
+    console.log(Link);
+
+    Link.setAttribute("href","detail/?adventure="+adventures[i].id);
+
+    // card outfit
+    const div1 = document.createElement("div");
+    div1.setAttribute("class","card activity-card");
+    console.log(div1);
+
+    // image tag
+    const Image_Tag = document.createElement("img");
+    Image_Tag.src = adventures[i].image;
+    console.log(Image_Tag);
+
+    const div2 = document.createElement("div");
+    const cat = document.createElement("div");
+    cat.setAttribute("class","category-banner");
+    cat.textContent = adventures[i].category;
+
+    div2.setAttribute("class","col-md-12 mt-2");
+
+    // this div for displaying name and cph;
+    const div3 = document.createElement("div");
+    div3.setAttribute("class","d-flex justify-content-between");
+    const p1 = document.createElement("p");
+    p1.textContent = adventures[i].name;
+    const p2 = document.createElement("p");
+    p2.textContent = "₹"+adventures[i].costPerHead;
+
+
+    // this div for displaying duration and hours
+    const div4 = document.createElement("div");
+    div4.setAttribute("class","d-flex justify-content-between");
+    const p3 = document.createElement("p");
+    p3.textContent = "Duration";
+    const p4 = document.createElement("p");
+    p4.textContent = adventures[i].duration+" Hours";
+    div4.append(p3);
+    div4.append(p4);
+
+    div3.append(p1);
+    div3.append(p2);
+
+
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.append(Image_Tag);
+    div1.append(cat);
+    div1.append(div2);
+
+    Link.append(div1);
+    ParentDiv.append(Link);
+
+
+  DataContainer.append(ParentDiv);
+  }
+
+
+
+
+
+
+
+
+  
+  }
+  
+
+
+
+
+
+  
+
+
 
 //Implementation of filtering by duration which takes in a list of adventures, the lower bound and upper bound of duration and returns a filtered list of adventures.
 function filterByDuration(list, low, high) {

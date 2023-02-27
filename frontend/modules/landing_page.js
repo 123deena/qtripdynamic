@@ -15,7 +15,7 @@ async function init() {
 async function fetchCities() {
   // TODO: MODULE_CITIES
   // 1. Fetch cities using the Backend API and return the data
-  const url = "http://13.126.251.16:8082/cities";
+  const url = config.backendEndpoint+"/cities";
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -38,6 +38,9 @@ function addCityToDOM(id, city, description, image) {
   Div1.setAttribute("class","tile col-lg-3 col-md-6 col-sm-12");
   Div1.setAttribute("id",id);
 
+  const AnchorTag = document.createElement("a");
+  AnchorTag.setAttribute("href","pages/adventures/?city="+id);
+
 
   const ImageTag = document.createElement("img");
   ImageTag.setAttribute("src",image);
@@ -45,7 +48,10 @@ function addCityToDOM(id, city, description, image) {
   
   // append to division
 
-  Div1.append(ImageTag);
+  //Div1.append(ImageTag);
+
+  const DivTile = document.createElement("div");
+  DivTile.setAttribute("class","tile");
 
   const TextDiv = document.createElement("div")
   TextDiv.setAttribute("class","tile-text");
@@ -58,8 +64,15 @@ function addCityToDOM(id, city, description, image) {
   TextDiv.append(p);
 
   // append to parent
+  DivTile.append(ImageTag);
+  DivTile.append(TextDiv);
 
-  Div1.append(TextDiv);
+  AnchorTag.append(DivTile);
+
+
+  Div1.append(AnchorTag);
+
+  //Div1.append(TextDiv);
 
   parentOfAll.append(Div1);
 
