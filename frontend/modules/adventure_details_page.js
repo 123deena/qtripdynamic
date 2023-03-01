@@ -105,6 +105,7 @@ function conditionalRenderingOfReservationPanel(adventure) {
   // 1. If the adventure is already reserved, display the sold-out message.
   
 
+
  
 
 }
